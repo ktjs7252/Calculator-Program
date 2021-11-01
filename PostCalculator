@@ -1,0 +1,65 @@
+**  PostCalculator.h
+
+#ifndef __POST_CALCULATOR_H__
+#define __POST_CALCULATOR_H__
+
+int EvalRPNExp(char exp[]);
+
+#endif
+
+
+**  PostCalculator.c
+
+#include <string.h>
+#include <ctype.h>
+#include "ListBaseStack.h"
+
+/* 후위 표기법을 계산하고 그 결과를 반환 */
+int EvalRPNExp(char exp[])
+{
+   Stack stack;
+   int expLen = strlen(exp);
+   int i;
+   char tok, op1, op2;
+
+   StackInit(&stack);
+
+   /* 
+   1. exp[](후위 표기법 배열)을 0 ~ len 돌아야한다.
+     1.1 exp[idx]가 숫자면, 스택에 넣는다.
+     1.2 exp[idx]가 연산자면, 스택에서 숫자 2개빼서, 계산해서, 스택에 넣는다.
+   */
+   for (i = 0; i < expLen; i++) //0 ~ len 돌아야한다.
+   {
+      tok = exp[i];
+
+      if (isdigit(tok))
+      {
+         SPush(&stack, tok - '0');
+      }
+      else //연산자면
+      {
+         op2 = SPop(&stack);
+         op1 = SPop(&stack);
+
+         switch(tok)
+         {
+            case '+':
+               SPush(&stack, op1 + op2);
+               break;
+            case '-' :
+               SPush(&stack, op1 - op2);
+               break;
+            case '*':
+               SPush(&stack, op1 * op2);
+               break;
+            case '/':
+               SPush(&stack, op1 / op2);
+               break;
+         }
+      }
+   }
+
+   return SPop(&stack); // 마지막 연산 결과가 스택에 있다. 이를 반환.
+}
+
