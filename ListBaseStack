@@ -1,0 +1,90 @@
+**  ListBaseStack.h
+
+#ifndef __LB_STACK_H__
+#define __LB_STACK_H__
+
+#define TRUE   1
+#define FALSE   0
+
+typedef int Data;
+
+typedef struct _node // 연결 리스트의 노드 표현
+{
+	Data data;
+	struct _node* next;
+} Node;
+
+typedef struct _listStack // 연결 리스트 기반 스택을 표현한 구조체
+{
+	Node* head;
+} ListStack;
+
+
+typedef ListStack Stack;
+
+void StackInit(Stack* pstack);
+int SIsEmpty(Stack* pstack);
+
+void SPush(Stack* pstack, Data data);
+Data SPop(Stack* pstack);
+Data SPeek(Stack* pstack);
+
+#endif
+
+**  ListBaseStack.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "ListBaseStack.h"
+
+void StackInit(Stack * pstack)
+{
+   pstack->head = NULL;
+}
+
+int SIsEmpty(Stack * pstack)
+{
+   if(pstack->head == NULL)
+      return TRUE;
+   else
+      return FALSE;
+}
+
+void SPush(Stack * pstack, Data data)
+{
+   Node * newNode = (Node*)malloc(sizeof(Node)); // 새 노드 생성
+
+   newNode->data = data;
+   newNode->next = pstack->head; // 새 노드 -> [최근 데이터]
+
+   pstack->head = newNode; // head -> [새 노드] -> [최근 데이터]
+}
+
+Data SPop(Stack * pstack)
+{
+   Data rdata;
+   Node * rnode;
+
+   if(SIsEmpty(pstack)) {
+      printf("Stack Memory Error!");
+      exit(-1);
+   }
+
+   rdata = pstack->head->data; // head -> [삭제할 노드] 데이터 keep 
+   rnode = pstack->head;  // 삭제할 노드 주소 저장
+
+   pstack->head = pstack->head->next; // head -> [2번째 노드], 삭제할 노드의 다음 노드 가리키게 함.  
+   free(rnode); // [1번째 노드] 삭제
+
+   return rdata; // 삭제된 노드 데이터 반환.
+}
+
+Data SPeek(Stack * pstack)
+{
+   if(SIsEmpty(pstack)) {
+      printf("Stack Memory Error!");
+      exit(-1);
+   }
+
+   return pstack->head->data; // 맨 위에 있는(head가 가리키는 노드의 데이터) 반환
+}
