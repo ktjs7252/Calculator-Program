@@ -1,0 +1,31 @@
+** InfixCalculator.h
+
+#ifndef __INFIX_CALCULATOR__
+#define __INFIX_CALCULATOR__
+
+int EvalInfixExp(char exp[]);
+
+#endif
+
+** InfixCalculator.c
+
+#include <string.h>
+#include <stdlib.h>
+#include "InfixToPostfix.h"
+#include "PostCalculator.h"
+
+#pragma warning(disable:4996)
+
+int EvalInfixExp(char exp[])
+{
+	int len = strlen(exp);
+	int ret;
+	char* expcpy = (char*)malloc(len + 1);
+	strcpy(expcpy, exp);
+
+	ConvToRPNExp(expcpy);     // (1) 후위 표기법 변환
+	ret = EvalRPNExp(expcpy); // (2) 후위 표기법 계산
+
+	free(expcpy);
+	return ret;
+}
