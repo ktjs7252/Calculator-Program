@@ -1,7 +1,7 @@
 
 > 스택 활용 - 계산기 프로그램 구현
 
-  1단계) 중위 -> 후위 변환 프로그램 구현 (44 project 복습.)
+  1단계) 중위 -> 후위 변환 프로그램 구현 
     - InfixToPostfix.h // ConvToRPNExp 함수 선언
     - InfixToPostfix.c // ConvToRPNExp 함수 정의
     - ListBaseStack.h // 스택 활용
